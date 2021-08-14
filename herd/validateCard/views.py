@@ -31,7 +31,7 @@ class ValidateCardView(APIView):
             check_digit = card_number_list.pop()
             card_number_list.reverse()
 
-            process_digits = []
+            processed_digits = []
             industries = [
                 "ISO/TC",
                 "Aerolinea",
@@ -48,16 +48,15 @@ class ValidateCardView(APIView):
 
             for index, digit in enumerate(card_number_list):
                 if index % 2 == 0:
-                    doubled_digits = int(digit * 2)
-                    if doubled_digits > 9:
-                        doubled_digits = doubled_digits - 9
-                    process_digits.append(doubled_digits)
+                    doubled_digit = int(digit)*2
+                    if doubled_digit > 9:
+                        doubled_digit = doubled_digit - 9
+                    processed_digits.append(doubled_digit)
                 else:
-                    process_digits.append(int(digit))
+                    processed_digits.append(int(digit))
 
-            total = int(check_digit) + sum(process_digits)
-
-            is_valid=bool(total%10==0)
+            total = int(check_digit) + sum(processed_digits)
+            is_valid = bool(total % 10==0)
 
             message = {
                 "Card number": card_number,
